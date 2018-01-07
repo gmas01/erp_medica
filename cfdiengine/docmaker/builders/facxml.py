@@ -104,6 +104,7 @@ class FacXml(BuilderGen):
                 'CUENTA': row['no_cuenta']
             }
 
+
     def __q_moneda(self, conn, prefact_id):
         """
         Consulta la moneda de la prefactura en dbms
@@ -138,7 +139,7 @@ class FacXml(BuilderGen):
             return {
                 'RFC': row['rfc'],
                 'RAZON_SOCIAL': unidecode.unidecode(row['razon_social']),
-                'USO_CFDI': 'G01'
+                'USO_CFDI': 'P01'
             }
 
     def __q_conceptos(self, conn, prefact_id):
@@ -182,13 +183,13 @@ class FacXml(BuilderGen):
             LEFT JOIN inv_prod_unidades on inv_prod_unidades.id = erp_prefacturas_detalles.inv_prod_unidad_id
             LEFT JOIN inv_prod_tipos on inv_prod_tipos.id = inv_prod.tipo_de_producto_id
             LEFT JOIN cfdi_claveunidad on inv_prod_unidades.cfdi_unidad_id = cfdi_claveunidad.id
-            LEFT JOIN cfdi_claveprodserv on inv_prod_tipos.cfdi_prodserv_id = cfdi_claveprodserv.id
+            LEFT JOIN cfdi_claveprodserv on inv_prod.cfdi_prodserv_id = cfdi_claveprodserv.id
             WHERE erp_prefacturas_detalles.prefacturas_id="""
         rowset = []
         for row in self.pg_query(conn, "{0}{1}".format(SQL, prefact_id)):
             rowset.append({
                 'SKU': row['sku'],
-                'DESCRIPCION': row['descripcion'],
+                'DESCRIPCION': unidecode.unidecode(row['descripcion']),
                 'UNIDAD': row['unidad'],
                 'PRODSERV': row['prodserv'],
                 'CANTIDAD': row['cantidad'],
@@ -409,7 +410,7 @@ class FacXml(BuilderGen):
         c.Folio = dat['CONTROL']['FOLIO']  # optional
         c.Fecha = dat['TIME_STAMP']
         c.Sello = '__DIGITAL_SIGN_HERE__'
-        c.FormaPago = "01"  # optional
+        c.FormaPago = dat["FORMA_PAGO"]['CLAVE']  # optional
         c.NoCertificado = dat['NUMERO_CERTIFICADO']
         c.Certificado = dat['CERT_B64']
         c.SubTotal = dat['TOTALES']['IMPORTE_SUM']
@@ -422,7 +423,7 @@ class FacXml(BuilderGen):
             c.TipoCambio = truncate(dat['MONEDA']['TIPO_DE_CAMBIO'], self.__NDECIMALS)
         c.Moneda = dat['MONEDA']['ISO_4217']
         c.TipoDeComprobante = 'I'
-        c.MetodoPago = "PUE"  # optional and hardcode until ui can suply such value
+        c.MetodoPago = "PPD"  # optional and hardcode until ui can suply such value
         c.LugarExpedicion = dat['LUGAR_EXPEDICION']
 
         c.Emisor = pyxb.BIND()
