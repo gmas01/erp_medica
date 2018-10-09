@@ -15,12 +15,8 @@ import java.util.Iterator;
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-/**
- *
- * @author Noé Martinez
- * gpmarsan@gmail.com
- * 21/junio/2012
- */
+
+
 public class PocSpringDao implements PocInterfaceDao{
     private JdbcTemplate jdbcTemplate;
 
@@ -32,6 +28,44 @@ public class PocSpringDao implements PocInterfaceDao{
         this.jdbcTemplate = jdbcTemplate;
     }
     
+    @Override
+    public ArrayList<HashMap<String, String>> getUsos() {
+        String sql_to_query = "SELECT id,numero_control FROM cfdi_usos;";
+        ArrayList<HashMap<String, String>> hm = (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
+                sql_to_query,
+                new Object[]{}, new RowMapper() {
+                    @Override
+                    public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        HashMap<String, String> row = new HashMap<String, String>();
+                        row.put("id", String.valueOf(rs.getInt("id")));
+                        row.put("numero_control", rs.getString("numero_control"));
+                        //       row.put("descripcion",rs.getString("descripcion"));
+                        return row;
+                    }
+                }
+        );
+        return hm;
+    }
+
+    // Metodo de Pago CFDI
+    @Override
+    public ArrayList<HashMap<String, String>> getMetodos() {
+        String sql_to_query = "SELECT id,clave FROM cfdi_metodos_pago;";
+        ArrayList<HashMap<String, String>> hm = (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
+                sql_to_query,
+                new Object[]{}, new RowMapper() {
+                    @Override
+                    public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        HashMap<String, String> row = new HashMap<String, String>();
+                        row.put("id", String.valueOf(rs.getInt("id")));
+                        row.put("clave", rs.getString("clave"));
+                        return row;
+                    }
+                }
+        );
+        return hm;
+    }
+
     @Override
     public HashMap<String, String> selectFunctionValidateAaplicativo(String data, Integer idApp, String string_array) {
         String sql_to_query = "select erp_fn_validaciones_por_aplicativo from erp_fn_validaciones_por_aplicativo('"+data+"',"+idApp+",array["+string_array+"]);";

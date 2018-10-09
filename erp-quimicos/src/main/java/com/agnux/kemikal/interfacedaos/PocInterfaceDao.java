@@ -128,4 +128,8 @@ public interface PocInterfaceDao{
     
     //Verifica si la Cotizacion no tiene precios pendientes de utorizar
     public HashMap<String, Object> getVerificarCotizacion(String folio_cotizacion, Integer id_suc);
+
+    public ArrayList<HashMap<String, String>> getUsos();
+
+    public ArrayList<HashMap<String, String>> getMetodos();
 }
