@@ -44,6 +44,8 @@ class SaxReader(xml.sax.ContentHandler):
             'CFDI_TOTAL': None,
             'FORMA_PAGO': None,
             'METODO_PAGO': None,
+            'DOCTOS': [],
+            'PAYMENTS': [],
             'ARTIFACTS': [],
             'TAXES': {
                 'RET': {
@@ -127,7 +129,7 @@ class SaxReader(xml.sax.ContentHandler):
                     self.__ds['TAXES']['RET']['TOTAL'] = v
                 if k == "TotalImpuestosTrasladados":
                     self.__ds['TAXES']['TRAS']['TOTAL'] = v
-
+ 
         if name == "cfdi:Traslado":
             c = {}
             if 'Base' in attrs:
@@ -142,6 +144,42 @@ class SaxReader(xml.sax.ContentHandler):
                         c[k.upper()] = v
                 self.__ds['TAXES']['TRAS']['DETAILS'].append(c)
 
+        if name == "pago10:Pago":
+            c = {}
+            for (k, v) in attrs.items():
+                if k == "NumOperacion":
+                    c[k.upper()] = v
+                if k == "Monto":
+                    c[k.upper()] = v
+                if k == "MonedaP":
+                    c[k.upper()] = v
+                if k == "TipoCambioP":
+                    c[k.upper()] = v
+                if k == "FormaDePagoP":
+                    c[k.upper()] = v
+                if k == "FechaPago":
+                    c[k.upper()] = v
+            self.__ds['PAYMENTS'].append(c)
+    
+        if name == "pago10:DoctoRelacionado":
+            c = {}
+            for (k, v) in attrs.items():
+                if k == "IdDocumento":
+                    c[k.upper()] = v
+                if k == "ImpPagado":
+                    c[k.upper()] = v
+                if k == "ImpSaldoAnt":
+                    c[k.upper()] = v
+                if k == "ImpSaldoInsoluto":
+                    c[k.upper()] = v
+                if k == "MetodoDePagoDR":
+                    c[k.upper()] = v
+                if k == "MonedaDR":
+                    c[k.upper()] = v
+                if k == "NumParcialidad":
+                    c[k.upper()] = v
+            self.__ds['DOCTOS'].append(c)
+                
         if name == "tfd:TimbreFiscalDigital":
             for (k, v) in attrs.items():
                 if k == "Version":
