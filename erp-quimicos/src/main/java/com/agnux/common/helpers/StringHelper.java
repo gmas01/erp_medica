@@ -1,14 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.agnux.common.helpers;
+
 
 import java.io.*;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,14 +19,13 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 
-/**
- *
- * @author fmora
- */
+
 public class StringHelper {
     
-    public StringHelper(){
-    }
+    public static Date parseDate(String strDate) throws Exception {
+        Date fDate = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+        return fDate;
+    }  
     
     public static String roundDouble(double numero, int ceros_a_la_derecha) {
         String mascara = "#.";
