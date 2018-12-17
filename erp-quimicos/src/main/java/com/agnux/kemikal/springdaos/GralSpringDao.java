@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.springdaos;
+
 
 import com.agnux.common.helpers.StringHelper;
 import com.agnux.kemikal.interfacedaos.GralInterfaceDao;
@@ -14,12 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 16/03/2012
- */
+
+
+
 public class GralSpringDao implements GralInterfaceDao{
     private JdbcTemplate jdbcTemplate;
     
@@ -32,14 +26,19 @@ public class GralSpringDao implements GralInterfaceDao{
     }
     
     @Override
+    public String[] getMicroserviceFiscalHost() {
+        return System.getenv("MS_FISCAL_HOST").split(":");
+    }
+
+    @Override
     public String getCfdEmitidosDir() {
-        String cfdemitidosdir = System.getenv("HOME") + "/" + "resources" + "/"+"cfd" + "/"+"emitidos" + "/";
+        String cfdemitidosdir = System.getenv("MS_BASE_DIR") + "/" + "resources" + "/"+"cfd" + "/"+"emitidos" + "/";
         return cfdemitidosdir;
     }
     
     @Override
     public String getCfdiSolicitudesDir() {
-        String cfdemitidosdir = System.getenv("HOME") + "/" + "resources" + "/"+"cfdi" + "/"+"solicitudes" + "/";
+        String cfdemitidosdir = System.getenv("MS_BASE_DIR") + "/" + "resources" + "/"+"cfdi" + "/"+"solicitudes" + "/";
         return cfdemitidosdir;
     }
     
@@ -51,70 +50,67 @@ public class GralSpringDao implements GralInterfaceDao{
     
     @Override
     public String getProdImgDir() {
-        String xsldir = System.getenv("HOME") + "/resources/productos/img/";
+        String xsldir = System.getenv("MS_BASE_DIR") + "/resources/productos/img/";
         return xsldir;
     }
     
     @Override
     public String getProdPdfDir() {
-        String xsldir = System.getenv("HOME") + "/resources/productos/pdf/";
+        String xsldir = System.getenv("MS_BASE_DIR") + "/resources/productos/pdf/";
         return xsldir;
     }
     
     @Override
     public String getCfdiTimbreEmitidosDir() {
-        String cfditimbreemitidosdir = System.getenv("HOME") + "/" + "resources" + "/"+"cfdi" + "/"+"timbre" + "/" + "emitidos" + "/";
+        String cfditimbreemitidosdir = System.getenv("MS_BASE_DIR") + "/" + "resources" + "/"+"cfdi" + "/"+"timbre" + "/" + "emitidos" + "/";
         return cfditimbreemitidosdir;
     }
     
     @Override
     public String getCfdiTimbreCanceladosDir() {
-        String cfditimbreemitidosdir = System.getenv("HOME") + "/" + "resources" + "/"+"cfdi" + "/"+"timbre" + "/" + "cancelados" + "/";
+        String cfditimbreemitidosdir = System.getenv("MS_BASE_DIR") + "/" + "resources" + "/"+"cfdi" + "/"+"timbre" + "/" + "cancelados" + "/";
         return cfditimbreemitidosdir;
     }
     
     @Override
     public String getCfdiTimbreJarWsDir() {
-        String cfditimbrejarwsdir = System.getenv("HOME") + "/" + "resources" + "/"+"cfdi" + "/"+"timbre" + "/" + "jarwscli" + "/";
+        String cfditimbrejarwsdir = System.getenv("MS_BASE_DIR") + "/" + "resources" + "/"+"cfdi" + "/"+"timbre" + "/" + "jarwscli" + "/";
         return cfditimbrejarwsdir;
     }
     
     @Override
     public String getImagesDir() {
-        String imagesdir = System.getenv("HOME") + "/" + "resources" + "/"+"images" + "/";
+        String imagesdir = System.getenv("MS_BASE_DIR") + "/" + "resources" + "/"+"images" + "/";
         return imagesdir;
     }
     
     @Override
     public String getSslDir() {
-        String ssldir = System.getenv("HOME") + "/" + "resources" + "/"+"ssl" + "/";
-        //System.out.println(ssldir);
+        String ssldir = System.getenv("MS_BASE_DIR") + "/" + "resources" + "/"+"ssl" + "/";
         return ssldir;
     }
     
     @Override
     public String getXslDir() {
-        String xsldir = System.getenv("HOME") + "/" + "resources" +"/"+"schemas" + "/"+"xsl" + "/";
-        //System.out.println(xsldir);
+        String xsldir = System.getenv("MS_BASE_DIR") + "/" + "resources" +"/"+"schemas" + "/"+"xsl" + "/";
         return xsldir;
     }
     
     @Override
     public String getXsdDir() {
-        String xsddir = System.getenv("HOME") + "/" + "resources" +"/"+"schemas" + "/"+"xsd" + "/";
-        //System.out.println(xsddir);
+        String xsddir = System.getenv("MS_BASE_DIR") + "/" + "resources" +"/"+"schemas" + "/"+"xsd" + "/";
         return xsddir;
     }
     
     @Override
     public String getTmpDir() {
-        String xsldir = System.getenv("HOME") + "/" + "resources" + "/"+"tmp" + "/";
+        String xsldir = System.getenv("MS_BASE_DIR") + "/" + "resources" + "/"+"tmp" + "/";
         return xsldir;
     }
     
     @Override
     public String getZebraDir() {
-        String zebradir = System.getenv("HOME") + "/" + "resources" + "/"+"zebra";
+        String zebradir = System.getenv("MS_BASE_DIR") + "/" + "resources" + "/"+"zebra";
         return zebradir;
     }
     
@@ -290,46 +286,6 @@ public class GralSpringDao implements GralInterfaceDao{
         String fichero = map.get("archivo_xsd_ctas_contables").toString();
         return fichero;
     }
-/*
-    @Override
-    public String getFicheroXsdRefId(Integer id_empresa, Integer id_sucursal) {
-        String sql_to_query = "select fac_cfds_conf.archivo_xsd_refid from fac_cfds_conf where fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
-        Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql_to_query);
-        String fichero = map.get("archivo_xsd_refid").toString();
-        return fichero;
-    }
-*/
-    
-/*
-    @Override
-    public String getFicheroXsdRequestTimbraCfdi(Integer id_empresa, Integer id_sucursal) {
-        String sql_to_query = "select fac_cfds_conf.archivo_xsd_request_timbra_cfdi from fac_cfds_conf where fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
-        Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql_to_query);
-        String fichero = map.get("archivo_xsd_request_timbra_cfdi").toString();
-        return fichero;
-    }
-*/
-
-/*
-    @Override
-    public String getFicheroXsdTimbradoCfd(Integer id_empresa, Integer id_sucursal) {
-        String sql_to_query = "select fac_cfds_conf.archivo_xsd_timbrado_cfd from fac_cfds_conf where fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
-        Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql_to_query);
-        String fichero = map.get("archivo_xsd_timbrado_cfd").toString();
-        return fichero;
-    }
-*/
-
-/*
-    @Override
-    public String getFicheroWsdlTimbradoCfdi(Integer id_empresa, Integer id_sucursal) {
-        String sql_to_query = "select fac_cfds_conf.archivo_wsdl_timbrado_cfdi from fac_cfds_conf where fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
-        Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql_to_query);
-        String fichero = map.get("archivo_wsdl_timbrado_cfdi").toString();
-        return fichero;
-    }
-*/
-    
     
     @Override
     public String getFicheroPfxTimbradoCfdi(Integer id_empresa, Integer id_sucursal) {
@@ -392,19 +348,6 @@ public class GralSpringDao implements GralInterfaceDao{
     }
     
     
-/*
-    @Override
-    public String getFicheroXsdTimbreFiscalDigital(Integer id_empresa, Integer id_sucursal) {
-        String sql_to_query = "select fac_cfds_conf.archivo_xsd_timbre_fiscal_digital from fac_cfds_conf where fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
-        Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql_to_query);
-        String fichero = map.get("archivo_xsd_timbre_fiscal_digital").toString();
-        return fichero;
-    }
-*/
-
-
-
-
     @Override
     public String getFolioFactura(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf_folios.folio_actual "

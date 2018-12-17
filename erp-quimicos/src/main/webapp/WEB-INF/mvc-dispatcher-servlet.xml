@@ -15,15 +15,11 @@
 	<mvc:annotation-driven />
         
         
-        <!--   Inicia  nuevo   -->
-        <!--<bean id="viewResolver" class=" org.springframework.web.servlet.view.InternalResourceViewResolver" >
-            <property name="prefix">
-                <value>/jsp/</value>
-            </property>
-            <property name="suffix">
-                <value>.jsp</value>
-            </property>
-        </bean> -->
+        <bean id="propertyPlaceholderConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+            <property name="searchSystemEnvironment" value="true" />
+        </bean>
         
         
         <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
@@ -55,13 +51,12 @@
         
         
         
-        <!--Conexion a bd instance01 LOCAL-->
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-	     <property name="driverClassName" value="org.postgresql.Driver" />
-             <property name="url" value="jdbc:postgresql://localhost:5432/instance01" />
-	     <property name="username" value="instance01" />
-	     <property name="password" value="instance01" />
-	</bean>
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value="org.postgresql.Driver" />
+            <property name="url" value="#{systemEnvironment['MS_DBMS_URL']}" />
+            <property name="username" value="#{systemEnvironment['MS_DBMS_USER']}" />
+            <property name="password" value="#{systemEnvironment['MS_DBMS_PASS']}" />
+        </bean>
         
         
         
