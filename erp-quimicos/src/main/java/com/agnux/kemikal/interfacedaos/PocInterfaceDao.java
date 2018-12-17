@@ -1,17 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.interfacedaos;
 import java.util.ArrayList;
 import java.util.HashMap;
-/**
- *
- * @author Noé Martinez
- * gpmarsan@gmail.com
- * 21/junio/2012
- */
+
+
 public interface PocInterfaceDao{
+    public ArrayList<HashMap<String, String>> getStatusRemisionIMSS();
+    public HashMap<String, String> setRemisionIMSS(String data_string, int app_selected);
+    public HashMap<String, String> logicDeleteRemisionIMSS(String data_string, int app_selected);
+    public ArrayList<HashMap<String, Object>> getRemisionesIMSS_PaginaGrid(String data_string, int offset, int pageSize, String orderBy, String asc);
+    public HashMap<String, String> getFormRemisionIMSS(Integer id_remision);
     public HashMap<String, String> selectFunctionValidateAaplicativo(String data, Integer idApp, String extra_data_array);
     public String selectFunctionForThisApp(String campos_data, String extra_data_array);
     public int countAll(String data_string);
